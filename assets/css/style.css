@@ -1,0 +1,336 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+/* --- Variables Globales --- */
+:root {
+    /* Palette Élégante & Moderne */
+    --primary-color: #4F46E5;      /* Indigo vibrant */
+    --primary-hover: #4338CA;
+    --secondary-color: #10B981;    /* Emeraude (succès) */
+    --accent-color: #F43F5E;       /* Rose (alertes) */
+    
+    --text-main: #1E293B;          /* Ardoise sombre (titres) */
+    --text-muted: #64748B;         /* Ardoise claire (paragraphes) */
+    
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.5);
+    --glass-shadow: 0 8px 32px 0 rgba(79, 70, 229, 0.1);
+    
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: all 0.2s ease;
+}
+
+/* --- Reset & Base --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    font-family: var(--font-body);
+    color: var(--text-main);
+    line-height: 1.6;
+    overflow-x: hidden;
+    background-color: #f1f5f9;
+}
+
+/* Fond animé ultra moderne pour les pages d'auth */
+.animated-bg {
+    background: linear-gradient(45deg, #eef2ff, #f8fafc, #e0e7ff, #f1f5f9);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    position: relative;
+}
+
+.animated-bg::before,
+.animated-bg::after {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: -1;
+    animation: float 20s infinite ease-in-out alternate;
+}
+
+.animated-bg::before {
+    background: rgba(99, 102, 241, 0.15); /* Indigo clair */
+    top: -100px;
+    left: -100px;
+}
+
+.animated-bg::after {
+    background: rgba(45, 212, 191, 0.15); /* Teal clair */
+    bottom: -100px;
+    right: -100px;
+    animation-delay: -10s;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes float {
+    0% { transform: translateY(0px) scale(1); }
+    100% { transform: translateY(50px) scale(1.1); }
+}
+
+/* --- Typographie --- */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--text-main);
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: var(--transition-fast);
+    font-weight: 500;
+}
+
+a:hover {
+    color: var(--primary-hover);
+    text-shadow: 0 0 8px rgba(79, 70, 229, 0.3);
+}
+
+/* --- Composants Glassmorphism --- */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    box-shadow: var(--glass-shadow);
+    transition: var(--transition-smooth);
+}
+
+.glass-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px 0 rgba(79, 70, 229, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+/* --- Boutons Élégants --- */
+.btn-modern {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #6366F1 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 28px;
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: 1.05rem;
+    letter-spacing: 0.01em;
+    transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+}
+
+.btn-modern::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(135deg, #6366F1 0%, var(--primary-color) 100%);
+    z-index: -1;
+    transition: opacity 0.4s ease;
+    opacity: 0;
+}
+
+.btn-modern:hover::before {
+    opacity: 1;
+}
+
+.btn-modern:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+    color: white;
+}
+
+.btn-modern:active {
+    transform: translateY(1px);
+}
+
+/* --- Formulaires Premium --- */
+.form-control-modern {
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(203, 213, 225, 0.6);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    transition: var(--transition-smooth);
+    color: var(--text-main);
+}
+
+.form-control-modern:focus {
+    background: #ffffff;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+    outline: none;
+}
+
+.form-control-modern::placeholder {
+    color: #94A3B8;
+    font-weight: 300;
+}
+
+.form-label {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    color: var(--text-main);
+    margin-bottom: 0.4rem;
+    font-size: 0.95rem;
+}
+
+/* --- Layouts & Utilitaires --- */
+.auth-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 480px;
+    position: relative;
+    z-index: 10;
+}
+
+/* --- Notifications (Alertes) --- */
+.alert-modern {
+    border-radius: 12px;
+    border: none;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 1rem 1.25rem;
+    animation: slideInDown 0.4s ease forwards;
+}
+
+.alert-danger-modern {
+    background: rgba(254, 226, 226, 0.8);
+    color: #991B1B;
+    border-left: 4px solid var(--accent-color);
+}
+
+.alert-success-modern {
+    background: rgba(209, 250, 229, 0.8);
+    color: #065F46;
+    border-left: 4px solid var(--secondary-color);
+}
+
+/* --- Animations --- */
+.fade-up {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUpAnim 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+
+@keyframes fadeUpAnim {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Dashboard spécifiques --- */
+.navbar-modern {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--glass-border);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar-brand-modern {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.4rem;
+    background: linear-gradient(135deg, var(--primary-color) 0%, #38BDF8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.dashboard-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1.2rem;
+    display: inline-block;
+    background: linear-gradient(135deg, var(--primary-color), #38BDF8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: transform 0.3s ease;
+}
+
+.glass-card:hover .dashboard-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* Badge (statut) */
+.badge-modern {
+    padding: 0.4em 0.8em;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* --- Responsivité (Mobile) --- */
+@media (max-width: 768px) {
+    .auth-container {
+        padding: 2rem 1.5rem !important;
+        margin: 1rem;
+    }
+    
+    h2 {
+        font-size: 1.75rem !important;
+    }
+    
+    .navbar-brand-modern {
+        font-size: 1.25rem;
+    }
+    
+    .dashboard-icon {
+        font-size: 2rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    /* Sur mobile, on réduit légèrement le flou pour les performances */
+    .glass-card {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+    
+    /* Sur mobile, le bouton d'inscription est plus compact */
+    .btn-modern {
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
+}
