@@ -142,9 +142,9 @@ function calculateAge($dob) {
                             
                             <div class="mt-auto pt-3 text-center">
                                 <p class="text-muted small mb-3"><i class="fa-regular fa-clock me-1"></i> Accès accordé le <?php echo date('d/m/Y', strtotime($pat['granted_at'])); ?></p>
-                                <button class="btn btn-primary w-100" style="border-radius: 10px; font-weight: 500; background: var(--primary-color); border-color: var(--primary-color);" onclick="alert('L\'accès au dossier spécifique n\'est pas encore développé pour la vue médecin.')">
+                                <a href="patient_profile.php?id=<?php echo $pat['id']; ?>" class="btn btn-primary w-100" style="border-radius: 10px; font-weight: 500; background: var(--primary-color); border-color: var(--primary-color);">
                                     <i class="fa-solid fa-folder-open me-2"></i> Ouvrir le Dossier
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>

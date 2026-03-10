@@ -159,7 +159,7 @@ function calculateAge($dob) {
                                                 <i class="fa-solid fa-phone me-1"></i> <?php echo htmlspecialchars($pat['phone'] ?? '-'); ?>
                                             </td>
                                             <td class="py-3 text-end">
-                                                <button class="btn btn-sm btn-outline-primary rounded-pill px-3" onclick="alert('Vue profil public bientôt disponible.')">Voir profil</button>
+                                                <a href="patient_profile.php?id=<?php echo $pat['id']; ?>" class="btn btn-sm btn-outline-primary rounded-pill px-3">Voir profil</a>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>
