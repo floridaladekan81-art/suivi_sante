@@ -9,6 +9,7 @@ if (isset($_POST["submit"])) {
     $fullname = trim($_POST["fullname"]);
     $email = trim($_POST["email"]);
     $password = $_POST["password"];
+    $role = isset($_POST["role"]) ? $_POST["role"] : "patient";
 
     $errors = array();
 
@@ -50,15 +51,19 @@ if (isset($_POST["submit"])) {
             
             $pdo->beginTransaction();
 
-            // 1. Créer l'utilisateur (par défaut 'patient')
-            $stmtUser = $pdo->prepare("INSERT INTO users (email, password_hash, role) VALUES (?, ?, 'patient')");
-            $stmtUser->execute([$email, $passwordHash]);
+            // 1. Créer l'utilisateur
+            $stmtUser = $pdo->prepare("INSERT INTO users (email, password_hash, role) VALUES (?, ?, ?)");
+            $stmtUser->execute([$email, $passwordHash, $role]);
             $userId = $pdo->lastInsertId();
 
-            // 2. Créer le profil patient associé avec des dates vides gérées ou valeurs nulles si possibles
-            // On a mis date_of_birth NOT NULL dans le SQL, on met une date par défaut provisoire pour l'inscription rapide
-            $stmtPatient = $pdo->prepare("INSERT INTO patients (user_id, first_name, last_name, date_of_birth) VALUES (?, ?, ?, '1900-01-01')");
-            $stmtPatient->execute([$userId, $firstName, $lastName]);
+            // 2. Créer le profil associé
+            if ($role === 'patient') {
+                $stmtPatient = $pdo->prepare("INSERT INTO patients (user_id, first_name, last_name, date_of_birth) VALUES (?, ?, ?, '1900-01-01')");
+                $stmtPatient->execute([$userId, $firstName, $lastName]);
+            } else if ($role === 'doctor') {
+                $stmtDoc = $pdo->prepare("INSERT INTO doctors (user_id, first_name, last_name, specialty) VALUES (?, ?, ?, 'Généraliste')");
+                $stmtDoc->execute([$userId, $firstName, $lastName]);
+            }
 
             $pdo->commit();
 
@@ -137,6 +142,24 @@ if (isset($_POST["submit"])) {
                                 <button class="btn btn-outline-secondary toggle-password" type="button" style="background: rgba(255,255,255,0.6); border: 1px solid rgba(203, 213, 225, 0.6); border-left: none;">
                                     <i class="fa-regular fa-eye text-muted"></i>
                                 </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label class="form-label d-block">Je suis un(e) :</label>
+                            <div class="d-flex gap-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="role" id="rolePatient" value="patient" checked>
+                                    <label class="form-check-label" for="rolePatient">
+                                        Patient
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="role" id="roleDoctor" value="doctor">
+                                    <label class="form-check-label" for="roleDoctor">
+                                        Professionnel de Santé
+                                    </label>
+                                </div>
                             </div>
                         </div>
                         

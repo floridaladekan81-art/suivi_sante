@@ -126,12 +126,21 @@ try {
                 </div>
             <?php else: ?>
                 <!-- Vue Médecin / Admin -->
-                <div class="col-md-12 fade-up delay-1">
-                    <div class="glass-card p-5 text-center">
-                        <i class="fa-solid fa-briefcase-medical fa-4x mb-4 text-primary"></i>
-                        <h3 class="mb-3">Espace Professionnel</h3>
-                        <p class="fs-5 text-muted mb-4">Recherchez vos patients ou consultez les dossiers qui vous ont été partagés.</p>
-                        <button class="btn-modern px-5 py-3 fs-5"><i class="fa-solid fa-magnifying-glass me-2"></i> Rechercher un patient</button>
+                <div class="col-md-6 fade-up delay-1">
+                    <div class="glass-card p-4 p-md-5 text-center h-100">
+                        <i class="fa-solid fa-users fa-3x mb-3 text-primary"></i>
+                        <h3 class="mb-3">Mes Patients</h3>
+                        <p class="text-muted mb-4">Consultez les dossiers des patients qui vous ont accordé l'accès.</p>
+                        <a href="patients_list.php" class="btn-modern d-inline-block text-decoration-none w-100"><i class="fa-solid fa-folder-open me-2"></i> Voir les dossiers partagés</a>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 fade-up delay-2">
+                    <div class="glass-card p-4 p-md-5 text-center h-100" style="border: 2px solid rgba(79, 70, 229, 0.3);">
+                        <i class="fa-solid fa-globe fa-3x mb-3" style="color: var(--secondary-color);"></i>
+                        <h3 class="mb-3">Annuaire Global</h3>
+                        <p class="text-muted mb-4">Recherchez d'autres praticiens ou tout patient inscrit sur la plateforme.</p>
+                        <a href="admin_directory.php" class="btn-modern d-inline-block text-decoration-none w-100" style="background: linear-gradient(135deg, var(--secondary-color) 0%, #059669 100%);"><i class="fa-solid fa-magnifying-glass me-2"></i> Ouvrir l'annuaire global</a>
                     </div>
                 </div>
             <?php endif; ?>
