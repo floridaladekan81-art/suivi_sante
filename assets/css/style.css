@@ -193,6 +193,32 @@ a:hover {
     font-size: 0.95rem;
 }
 
+.toggle-password {
+    border-top-right-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
+    transition: var(--transition-smooth);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toggle-password:hover, .toggle-password:active {
+    background: rgba(255, 255, 255, 0.9) !important;
+    color: var(--primary-color) !important;
+}
+
+.input-group:focus-within .toggle-password,
+.input-group:focus-within .input-group-text {
+    border-color: var(--primary-color) !important;
+    background: #ffffff !important;
+}
+
+/* Prevent double box shadow when focus is active */
+.toggle-password:focus {
+    box-shadow: none !important;
+    border-color: var(--primary-color) !important;
+}
+
 /* --- Layouts & Utilitaires --- */
 .auth-wrapper {
     min-height: 100vh;

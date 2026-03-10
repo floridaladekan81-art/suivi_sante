@@ -133,7 +133,10 @@ if (isset($_POST["submit"])) {
                             <label class="form-label" for="password">Mot de passe</label>
                             <div class="input-group">
                                 <span class="input-group-text" style="background: rgba(255,255,255,0.6); border: 1px solid rgba(203, 213, 225, 0.6); border-right: none;"><i class="fa-solid fa-lock text-muted"></i></span>
-                                <input type="password" id="password" class="form-control form-control-modern border-start-0 ps-0" name="password" placeholder="Min. 6 caractères" required>
+                                <input type="password" id="password" class="form-control form-control-modern border-start-0 border-end-0 ps-0" name="password" placeholder="Min. 6 caractères" required>
+                                <button class="btn btn-outline-secondary toggle-password" type="button" style="background: rgba(255,255,255,0.6); border: 1px solid rgba(203, 213, 225, 0.6); border-left: none;">
+                                    <i class="fa-regular fa-eye text-muted"></i>
+                                </button>
                             </div>
                         </div>
                         
@@ -151,5 +154,20 @@ if (isset($_POST["submit"])) {
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const togglePassword = document.querySelector('.toggle-password');
+            const password = document.querySelector('#password');
+
+            if(togglePassword && password) {
+                togglePassword.addEventListener('click', function () {
+                    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                    password.setAttribute('type', type);
+                    this.querySelector('i').classList.toggle('fa-eye');
+                    this.querySelector('i').classList.toggle('fa-eye-slash');
+                });
+            }
+        });
+    </script>
 </body>
 </html>

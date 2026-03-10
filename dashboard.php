@@ -95,7 +95,7 @@ try {
                         <i class="fa-regular fa-id-card dashboard-icon"></i>
                         <h4 class="mb-3">Mon Profil</h3>
                         <p class="text-muted mb-4">Gérez vos informations personnelles, groupe sanguin et contacts d'urgence.</p>
-                        <a href="#" class="btn-modern d-inline-block text-decoration-none w-100">
+                        <a href="profile.php" class="btn-modern d-inline-block text-decoration-none w-100">
                             Gérer mon profil <i class="fa-solid fa-arrow-right ms-2"></i>
                         </a>
                     </div>
@@ -107,7 +107,7 @@ try {
                         <i class="fa-solid fa-file-medical dashboard-icon" style="background: linear-gradient(135deg, var(--secondary-color), #2DD4BF); -webkit-background-clip: text;"></i>
                         <h4 class="mb-3">Dossier Médical</h3>
                         <p class="text-muted mb-4">Archives de consultations, chirurgies, allergies et carnet de vaccinations.</p>
-                        <a href="#" class="btn-modern d-inline-block text-decoration-none w-100" style="background: linear-gradient(135deg, var(--secondary-color) 0%, #059669 100%);">
+                        <a href="medical_records.php" class="btn-modern d-inline-block text-decoration-none w-100" style="background: linear-gradient(135deg, var(--secondary-color) 0%, #059669 100%);">
                             Ouvrir le dossier <i class="fa-solid fa-stethoscope ms-2"></i>
                         </a>
                     </div>
@@ -119,7 +119,7 @@ try {
                         <i class="fa-solid fa-user-doctor dashboard-icon" style="background: linear-gradient(135deg, #F59E0B, #EA580C); -webkit-background-clip: text;"></i>
                         <h4 class="mb-3">Mes Médecins</h3>
                         <p class="text-muted mb-4">Gérez la liste de vos médecins et les droits d'accès à votre dossier.</p>
-                        <a href="#" class="btn-modern d-inline-block text-decoration-none w-100" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);">
+                        <a href="doctors.php" class="btn-modern d-inline-block text-decoration-none w-100" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);">
                             Accès partagés <i class="fa-solid fa-users ms-2"></i>
                         </a>
                     </div>
@@ -140,7 +140,7 @@ try {
     
     <!-- Footer discret intégré au fond -->
     <footer class="text-center py-4 mt-5 fade-up delay-3" style="border-top: 1px solid rgba(255,255,255,0.3);">
-        <p class="mb-0 text-muted fw-medium">&copy; <?php echo date('Y'); ?> Application Suivi Santé. Design Premium.</p>
+        <p class="mb-0 text-muted fw-medium">&copy; <?php echo date('Y'); ?> Application Suivi Santé. Florida Bellange Olamidé LADEKAN.</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

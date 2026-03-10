@@ -68,3 +68,16 @@ CREATE TABLE IF NOT EXISTS patient_doctor_access (
     FOREIGN KEY (doctor_id) REFERENCES doctors(id) ON DELETE CASCADE,
     UNIQUE KEY (patient_id, doctor_id)
 );
+
+-- Table `patient_metrics` (Constantes de santé)
+CREATE TABLE IF NOT EXISTS patient_metrics (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    patient_id INT NOT NULL,
+    metric_type ENUM('weight', 'height', 'blood_pressure', 'heart_rate', 'temperature') NOT NULL,
+    metric_value VARCHAR(50) NOT NULL,
+    metric_unit VARCHAR(20) NOT NULL,
+    measured_at DATETIME NOT NULL,
+    notes TEXT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE
+);
