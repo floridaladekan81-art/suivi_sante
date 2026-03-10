@@ -8,16 +8,49 @@ if (!isset($_SESSION["user_id"]) || $_SESSION["user_role"] !== 'patient') {
 }
 
 $user_id = $_SESSION["user_id"];
+$success_message = "";
+$error_message = "";
+
 $pdo = getDBConnection();
 
-$stmt = $pdo->prepare("SELECT first_name, last_name FROM patients WHERE user_id = ?");
+$stmt = $pdo->prepare("SELECT id, first_name, last_name FROM patients WHERE user_id = ?");
 $stmt->execute([$user_id]);
 $patient = $stmt->fetch(PDO::FETCH_ASSOC);
+$patient_id = $patient['id'];
 $user_name = htmlspecialchars($patient['first_name'] . ' ' . $patient['last_name']);
 
-// Récupérer la liste des médecins pour l'annuaire
+// Gestion de l'autorisation d'accès
+if (isset($_POST['toggle_access'])) {
+    $doctor_id = $_POST['doctor_id'];
+    $action = $_POST['action'];
+
+    if ($action === 'grant') {
+        try {
+            $stmt = $pdo->prepare("INSERT INTO patient_doctor_access (patient_id, doctor_id, access_level) VALUES (?, ?, 'read')");
+            $stmt->execute([$patient_id, $doctor_id]);
+            $success_message = "Accès accordé au médecin avec succès.";
+        } catch (PDOException $e) {
+            $error_message = "Erreur : L'accès est déjà accordé ou un problème est survenu.";
+        }
+    } else if ($action === 'revoke') {
+        try {
+            $stmt = $pdo->prepare("DELETE FROM patient_doctor_access WHERE patient_id = ? AND doctor_id = ?");
+            $stmt->execute([$patient_id, $doctor_id]);
+            $success_message = "Accès révoqué de manière permanente.";
+        } catch (PDOException $e) {
+            $error_message = "Erreur lors de la révocation de l'accès.";
+        }
+    }
+}
+
+// Récupérer la liste des médecins
 $stmtD = $pdo->query("SELECT id, first_name, last_name, specialty, office_address, phone FROM doctors");
 $doctors = $stmtD->fetchAll(PDO::FETCH_ASSOC);
+
+// Récupérer les médecins qui ont accès au profil
+$stmtA = $pdo->prepare("SELECT doctor_id FROM patient_doctor_access WHERE patient_id = ?");
+$stmtA->execute([$patient_id]);
+$granted_doctors = $stmtA->fetchAll(PDO::FETCH_COLUMN); // Tableau des IDs
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -74,21 +107,41 @@ $doctors = $stmtD->fetchAll(PDO::FETCH_ASSOC);
         <div class="mb-5 fade-up delay-1">
             <a href="dashboard.php" class="text-decoration-none text-muted mb-3 d-inline-block"><i class="fa-solid fa-arrow-left me-2"></i>Retour au tableau de bord</a>
             <h2 style="font-weight: 700; color: var(--primary-color);"><i class="fa-solid fa-user-doctor me-2"></i>Annuaire des Médecins</h2>
-            <p class="text-muted fs-5 mb-0">Retrouvez les professionnels de santé inscrits sur la plateforme et partagez-leur l'accès à vos données.</p>
+            <p class="text-muted fs-5 mb-0">Retrouvez les professionnels de santé inscrits sur la plateforme et gérez leurs accès à votre dossier.</p>
         </div>
+
+        <?php if (!empty($success_message)): ?>
+            <div class="alert-modern alert-success-modern mb-4 fade-up delay-1">
+                <i class="fa-solid fa-check-circle"></i> <?php echo $success_message; ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if (!empty($error_message)): ?>
+            <div class="alert-modern alert-danger-modern mb-4 fade-up delay-1">
+                <i class="fa-solid fa-triangle-exclamation"></i> <?php echo htmlspecialchars($error_message); ?>
+            </div>
+        <?php endif; ?>
 
         <div class="row g-4 fade-up delay-2">
             <?php if (count($doctors) > 0): ?>
                 <?php foreach ($doctors as $doc): ?>
+                    <?php 
+                        $has_access = in_array($doc['id'], $granted_doctors);
+                    ?>
                     <div class="col-md-6 col-lg-4">
-                        <div class="glass-card doctor-card p-4 h-100">
+                        <div class="glass-card doctor-card p-4 h-100 position-relative">
+                            
+                            <?php if($has_access): ?>
+                                <span class="position-absolute top-0 end-0 mt-3 me-3 badge bg-success text-white px-2 py-1" style="border-radius: 6px;"><i class="fa-solid fa-shield-check me-1"></i> Accès Autorisé</span>
+                            <?php endif; ?>
+
                             <div class="d-flex align-items-center gap-3 mb-3">
                                 <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; background: rgba(79, 70, 229, 0.1);">
                                     <i class="fa-solid fa-user-md fa-2x text-primary"></i>
                                 </div>
                                 <div>
                                     <h5 class="mb-0 fw-bold">Dr. <?php echo htmlspecialchars($doc['first_name'] . ' ' . $doc['last_name']); ?></h5>
-                                    <span class="badge bg-primary rounded-pill text-white mt-1"><?php echo htmlspecialchars($doc['specialty'] ?? 'Généraliste'); ?></span>
+                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill mt-1"><?php echo htmlspecialchars($doc['specialty'] ?? 'Généraliste'); ?></span>
                                 </div>
                             </div>
                             
@@ -100,9 +153,20 @@ $doctors = $stmtD->fetchAll(PDO::FETCH_ASSOC);
                             </ul>
                             
                             <div class="mt-auto">
-                                <button class="btn btn-outline-primary w-100" style="border-radius: 10px; font-weight: 500;" onclick="alert('Fonction de partage bientôt disponible.')">
-                                    <i class="fa-solid fa-share-nodes me-2"></i> Partager mon dossier
-                                </button>
+                                <form action="doctors.php" method="post" class="w-100">
+                                    <input type="hidden" name="doctor_id" value="<?php echo $doc['id']; ?>">
+                                    <?php if($has_access): ?>
+                                        <input type="hidden" name="action" value="revoke">
+                                        <button type="submit" name="toggle_access" class="btn btn-outline-danger w-100" style="border-radius: 10px; font-weight: 500;">
+                                            <i class="fa-solid fa-lock me-2"></i> Révoquer l'accès
+                                        </button>
+                                    <?php else: ?>
+                                        <input type="hidden" name="action" value="grant">
+                                        <button type="submit" name="toggle_access" class="btn btn-primary w-100" style="border-radius: 10px; font-weight: 500; background: var(--primary-color); border-color: var(--primary-color);">
+                                            <i class="fa-solid fa-unlock-keyhole me-2"></i> Autoriser l'accès
+                                        </button>
+                                    <?php endif; ?>
+                                </form>
                             </div>
                         </div>
                     </div>
